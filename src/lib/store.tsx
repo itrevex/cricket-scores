@@ -65,3 +65,5 @@ export const team1ScoreAtom = atom<number>();
 export const team2ScoreAtom = atom<number>();
 export const team1WicketsAtom = atom<number>();
 export const team2WicketsAtom = atom<number>();
+export const oversAtom = atom<number>();
+export const bowlsAtom = atom<number>(0);

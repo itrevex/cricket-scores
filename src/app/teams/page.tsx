@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { useAtom } from "jotai";
 import _ from "lodash";
 import RootLayout from "../layout";
@@ -127,6 +128,11 @@ const Teams: React.FC = () => {
         {/* Do Toss*/}
         <Toss selectedTeams={selectedTeams} />
         {startingTeam && <SelectHeadOrTails />}
+        {startingTeam && (
+          <Link className="text-black" href="/match">
+            Start Playing
+          </Link>
+        )}
       </div>
     </RootLayout>
   );
