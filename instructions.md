@@ -16,7 +16,10 @@ Core Requirements
 - Toss simulation with random outcome
     1. Do a toss - 
 - Choose batting/bowling after winning toss
+
 - Fixed 5-over match format
+   1. add play for playing match
+   2. use the selected teams to do the simulation
 
 2. Scoring Interface (/scorer)
 - Current batsmen display

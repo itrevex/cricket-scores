@@ -1,26 +1,19 @@
 "use client";
 
 import React, { useState } from "react";
+import { useAtom } from "jotai";
 import _ from "lodash";
 import RootLayout from "../layout";
+import {
+  selectedTeamsAtom,
+  startingTeamAtom,
+  teamsAtom,
+} from "../../lib/store";
+import { TeamType, TossProps } from "../../lib/types";
 
-type PlayerType = {
-  id: string;
-  name: string;
-  role: string;
-};
-type TeamType = {
-  id: string;
-  name: string;
-  players: PlayerType[];
-};
-
-type TossProps = {
-  selectedTeams: TeamType[] | null;
-};
-
+// TODO: move to separate component
 const Toss: React.FC<TossProps> = ({ selectedTeams }) => {
-  const [startingTeam, setStartingTeam] = useState<TeamType | undefined>();
+  const [startingTeam, setStartingTeam] = useAtom(startingTeamAtom);
 
   const handleToss = () => {
     const _startingTeam = _.sampleSize(selectedTeams)[0];
@@ -31,7 +24,7 @@ const Toss: React.FC<TossProps> = ({ selectedTeams }) => {
 
   return (
     <div>
-      <h3>Click to do Toss to get starting Team.</h3>
+      <h3 className="text-gray-500">Click to do Toss to get starting Team.</h3>
       {startingTeam && (
         <p className="text-gray-700">
           The starting team{" "}
@@ -44,63 +37,64 @@ const Toss: React.FC<TossProps> = ({ selectedTeams }) => {
     </div>
   );
 };
+
+type SelectedStartType = "batting" | "bowling" | undefined;
+
+// TODO: move to separate component
+const SelectHeadOrTails = () => {
+  // move to global state
+  const [seletedStart, setSelectedStart] = useState<SelectedStartType>();
+
+  const handleOnChange = (start: SelectedStartType) => {
+    setSelectedStart(start);
+  };
+
+  return (
+    <div className="py-4">
+      <div className="flex items-center mb-4">
+        <input
+          checked={seletedStart === "batting"}
+          id="batting-radio-1"
+          type="radio"
+          value=""
+          onChange={() => handleOnChange("batting")}
+          name="batting-radio"
+          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+        />
+        <label
+          htmlFor="disabled-radio-1"
+          className="ms-2 text-sm font-medium text-gray-700 dark:text-gray-500"
+        >
+          Batting
+        </label>
+      </div>
+      <div className="flex items-center">
+        <input
+          checked={seletedStart === "bowling"}
+          id="bowling-radio-2"
+          type="radio"
+          value=""
+          onChange={() => handleOnChange("bowling")}
+          name="bowling-radio"
+          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+        />
+        <label
+          htmlFor="disabled-radio-2"
+          className="ms-2 text-sm font-medium text-gray-700 dark:text-gray-500"
+        >
+          Bowling
+        </label>
+      </div>
+    </div>
+  );
+};
+
 const Teams: React.FC = () => {
-  const teams: TeamType[] = [
-    {
-      id: "IND",
-      name: "India",
-      players: [
-        { id: "IND1", name: "Ind Player 1", role: "Batsman" },
-        { id: "IND2", name: "Ind Player 2", role: "Batsman" },
-        { id: "IND3", name: "Ind Player 3", role: "Batsman" },
-        { id: "IND4", name: "Ind Player 4", role: "Batsman" },
-        { id: "IND5", name: "Ind Player 5", role: "Batsman" },
-        { id: "IND6", name: "Ind Player 6", role: "Batsman" },
-        { id: "IND7", name: "Ind Player 7", role: "Bowler" },
-        { id: "IND8", name: "Ind Player 8", role: "Bowler" },
-        { id: "IND9", name: "Ind Player 9", role: "Bowler" },
-        { id: "IND10", name: "Ind Player 10", role: "Batsman" },
-        { id: "IND11", name: "Rohit Sharma", role: "Batsman" },
-      ],
-    },
-    {
-      id: "PAK",
-      name: "Pakistan",
-      players: [
-        { id: "PAK1", name: "Pak Player 1", role: "Batsman" },
-        { id: "PAK2", name: "Pak Player 2", role: "Batsman" },
-        { id: "PAK3", name: "Pak Player 3", role: "Batsman" },
-        { id: "PAK4", name: "Pak Player 4", role: "Batsman" },
-        { id: "PAK5", name: "Pak Player 5", role: "Batsman" },
-        { id: "PAK6", name: "Pak Player 6", role: "Batsman" },
-        { id: "PAK7", name: "Pak Player 7", role: "Bastman" },
-        { id: "PAK8", name: "Pak Player 8", role: "Bowler" },
-        { id: "PAK9", name: "Pak Player 9", role: "Bowler" },
-        { id: "PAK10", name: "Pak Player 10", role: "Batsman" },
-        { id: "PAK11", name: "Pak Player 11", role: "Batsman" },
-      ],
-    },
-    {
-      id: "AUS",
-      name: "Australia",
-      players: [
-        { id: "AUS1", name: "Aus Player 1", role: "Batsman" },
-        { id: "AUS2", name: "Aus Player 2", role: "Batsman" },
-        { id: "AUS3", name: "Aus Player 3", role: "Batsman" },
-        { id: "AUS4", name: "Aus Player 4", role: "Batsman" },
-        { id: "AUS5", name: "Aus Player 5", role: "Batsman" },
-        { id: "AUS6", name: "Aus Player 6", role: "Batsman" },
-        { id: "AUS7", name: "Aus Player 7", role: "Bastman" },
-        { id: "AUS8", name: "Aus Player 8", role: "Bowler" },
-        { id: "AUS9", name: "Aus Player 9", role: "Bowler" },
-        { id: "AUS10", name: "Aus Player 10", role: "Batsman" },
-        { id: "AUS11", name: "Aus Player 10", role: "Batsman" },
-      ],
-    },
-  ];
+  const [teams] = useAtom(teamsAtom);
 
   // move to global state once done
-  const [selectedTeams, setSelectedTeams] = useState<TeamType[] | null>(null);
+  const [selectedTeams, setSelectedTeams] = useAtom(selectedTeamsAtom);
+  const [startingTeam] = useAtom(startingTeamAtom);
 
   const handleTeamSelection = () => {
     const _selectedTeams = _.sampleSize(teams, 2);
@@ -111,13 +105,17 @@ const Teams: React.FC = () => {
     <RootLayout>
       <div className="flex justify-center items-center flex-col">
         <h2 className="text-black font-semibold">Select Teams</h2>
-        <p>Selected Teams</p>
+        <p className="text-gray-500">Selected Teams</p>
         {selectedTeams && (
-          <li>
-            {selectedTeams.map((team: TeamType) => {
-              return <ol key={team.id}>{team.name}</ol>;
+          <div className="flex justify-start flex-col">
+            {selectedTeams.map((team: TeamType, index) => {
+              return (
+                <p key={team.id} className="text-gray-500 py-2">
+                  {index + 1}. {team.name}
+                </p>
+              );
             })}
-          </li>
+          </div>
         )}
         <button
           onClick={handleTeamSelection}
@@ -128,6 +126,7 @@ const Teams: React.FC = () => {
 
         {/* Do Toss*/}
         <Toss selectedTeams={selectedTeams} />
+        {startingTeam && <SelectHeadOrTails />}
       </div>
     </RootLayout>
   );
