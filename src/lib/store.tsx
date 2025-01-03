@@ -60,3 +60,8 @@ export const teamsAtom = atom<TeamType[]>(teams);
 export const selectedTeamsAtom = atom<TeamType[] | null>();
 
 export const startingTeamAtom = atom<TeamType | null>(null);
+
+export const team1ScoreAtom = atom<number>();
+export const team2ScoreAtom = atom<number>();
+export const team1WicketsAtom = atom<number>();
+export const team2WicketsAtom = atom<number>();
